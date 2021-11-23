@@ -14,4 +14,9 @@ class Helper
         }
         return false;
     }
+
+    public static function verifyInput($text){
+        $tmp = preg_replace("/[^a-zA-Z0-9]+/", "", $text);
+        return ($text == $tmp) ? true : false;
+    }
 }

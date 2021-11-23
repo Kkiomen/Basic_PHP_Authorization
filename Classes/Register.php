@@ -19,22 +19,26 @@ class Register
     public function handle(){
         $result = false;
         if($this->passwordSimilarityCheck()){
-            if($this->checkLengthInput()){
-                if($this->issetUser()){
+            if(Helper::verifyInput($this->fields['login'])){
+                if($this->checkLengthInput()){
+                    if($this->issetUser()){
 
-                    $user = new User($this->fields['login'], $this->db);
-                    $user->setPassword($user->hashPassword($this->fields['password']));
-                    $user->setFirstname($this->fields['firstname']);
-                    $user->setSecondname($this->fields['secondname']);
-                    $user->setSex($this->fields['sex']);
-                    $user->save();
-                    Alert::add("Rejestracja przebiegła pomyślnie", "success");
+                        $user = new User($this->fields['login'], $this->db);
+                        $user->setPassword($user->hashPassword($this->fields['password']));
+                        $user->setFirstname($this->fields['firstname']);
+                        $user->setSecondname($this->fields['secondname']);
+                        $user->setSex($this->fields['sex']);
+                        $user->save();
+                        Alert::add("Rejestracja przebiegła pomyślnie", "success");
 
-                    Helper::redirect('login.php');
-                    $result = true;
-                }else{
-                    Alert::add("Taki użytkownik już istnieje", "danger");
+                        Helper::redirect('login.php');
+                        $result = true;
+                    }else{
+                        Alert::add("Taki użytkownik już istnieje", "danger");
+                    }
                 }
+            }else{
+                Alert::add("Login może składać się tylko z liter i liczb", "danger");
             }
         }else{
             Alert::add("Hasła nie pasują do siebie!", "danger");
